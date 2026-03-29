@@ -35,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |                    |  F7  |  F8  |  F9  | F10  | F11  | F12  | 
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |                    |  F7  |  F8  |  F9  | F10  | F11  | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |      |      |      |      |      |                    |      |      |   7  |   8  |   9  |  0   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_LOWER] = LAYOUT(
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  _______, _______, _______, _______, _______, _______,                   _______, _______, DK_7,    DK_8,    DK_9,    DK_0,    
+  _______, _______, _______, _______, _______, _______,                   _______, _______, DK_7,    DK_8,    DK_9,    DK_0,
   _______, DK_EXLM, DK_AT,   DK_HASH, DK_DLR,  DK_PERC,                   DK_ASTR, DK_BSLS, DK_4,    DK_5,    DK_6,    DK_EQL,
   _______, _______, _______, _______, _______, _______, DK_LCBR, DK_RCBR, DK_PLUS, DK_MINS, DK_1,    DK_2,    DK_3,    DK_PIPE,
                              _______, _______, _______, _______, _______, _______, KC_DEL,  _______
@@ -121,22 +121,19 @@ const char *read_logo(void);
 void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
-
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
-// void set_timelog(void);
-// const char *read_timelog(void);
 
 bool oled_task_user(void) {
   if (is_keyboard_master()) {
     // If you want to change the display of OLED, you need to change here
-    oled_write_ln("Layer", false);
     oled_write_ln(read_layer_state(), false);
+    oled_write_ln("-----", false);
     oled_write_ln(read_keylog(), false);
+    oled_write_ln("-----", false);
     oled_write_ln(read_keylogs(), false);
     //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
     //oled_write_ln(read_host_led_state(), false);
-    //oled_write_ln(read_timelog(), false);
   } else {
     oled_write(read_logo(), false);
   }
@@ -149,7 +146,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef OLED_ENABLE
     set_keylog(keycode, record);
 #endif
-    // set_timelog();
   }
   return true;
 }
